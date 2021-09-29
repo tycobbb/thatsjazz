@@ -6,8 +6,8 @@ public readonly struct Key {
 
     // -- lifetime --
     /// create a new key with the root
-    public Key(Note root) {
-        mRoot = root.IntoTone();
+    Key(Tone root) {
+        mRoot = root;
     }
 
     // -- queries --
@@ -32,5 +32,10 @@ public readonly struct Key {
 
         // build a chord
         return new Chord(tones);
+    }
+
+    // -- factories --
+    public static Key C {
+        get => new Key(new Tone(0));
     }
 }

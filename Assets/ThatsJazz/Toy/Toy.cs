@@ -7,7 +7,7 @@ public class Toy: MonoBehaviour {
 
     // -- props --
     /// the toy's current musical key
-    readonly Key mKey = new Key(Note.C);
+    readonly Key mKey = Key.C;
 
     /// how many times the toy has bounced
     int mPlayCount = 0;
