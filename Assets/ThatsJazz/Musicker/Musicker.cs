@@ -39,7 +39,7 @@ public class Musicker: MonoBehaviour {
     /// play some music
     void Play() {
         var key = new Key(Note.C);
-        var chord = key.Chord(Tone.I, Tone.III, Tone.V, Tone.VII);
+        var chord = key.Chord(Tone.I, Quality.Min7);
         PlayChord(chord, 0.1f);
     }
 

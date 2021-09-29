@@ -1,32 +1,36 @@
 /// a western-musical key
 public readonly struct Key {
     // -- props --
-    /// the root note for this key
-    readonly Note mRoot;
+    /// the root tone for this key
+    readonly Tone mRoot;
 
     // -- lifetime --
-    /// create a new key with a root
+    /// create a new key with the root
     public Key(Note root) {
-        mRoot = root;
+        mRoot = root.IntoTone();
     }
 
     // -- queries --
-    /// get a note for a tone
-    public Note Note(Tone tone) {
-        return (Note)(((int)mRoot + tone.NumSteps()) % 12);
+    /// get a tone in this key
+    public Tone Note(Tone tone) {
+        return tone.From(mRoot);
     }
 
     /// get a chord for the tones
-    public Chord Chord(params Tone[] tones) {
-        // get the notes for these tones
-        var n = tones.Length;
-        var notes = new Note[n];
+    public Chord Chord(Tone root, Quality quality) {
+        // get root note in key
+        root = root.From(mRoot);
+
+        // get the tones w/ this root and quality
+        var n = quality.Length;
+        var tones = new Tone[n];
 
         for (var i = 0; i < n; i++) {
-            notes[i] = Note(tones[i]);
+            var tone = quality[i];
+            tones[i] = tone.From(root);
         }
 
         // build a chord
-        return new Chord(notes);
+        return new Chord(tones);
     }
 }

@@ -13,3 +13,11 @@ public enum Note {
     AsBf,
     B,
 }
+
+// -- queries --
+public static class NoteExt {
+    /// converts this note into a tone
+    public static Tone IntoTone(this Note note) {
+        return new Tone((int)note);
+    }
+}

@@ -3,28 +3,28 @@ using System.Linq;
 /// a chord w/ a key and quality
 public readonly struct Chord {
     // -- props --
-    /// the list of notes
-    readonly Note[] mNotes;
+    /// the chord tones
+    readonly Tone[] mTones;
 
     // -- lifetime --
-    /// create a chord from a key and tones
-    public Chord(Note[] notes) {
-        mNotes = notes;
+    /// create a chord from a list of tones
+    public Chord(Tone[] tones) {
+        mTones = tones;
     }
 
     // -- queries --
     /// the number of notes in this chord
     public int Length {
-        get => mNotes.Length;
+        get => mTones.Length;
     }
 
-    /// get the note at the index
-    public Note FindNote(int i) {
-        return mNotes[i];
+    /// the tone at the position
+    public Tone this[int i] {
+        get => mTones[i];
     }
 
     // -- debugging --
     public override string ToString() {
-        return string.Join(" ", mNotes.Select((n) => n.ToString()));
+        return string.Join(" ", mTones.Select((n) => n.ToString()));
     }
 }

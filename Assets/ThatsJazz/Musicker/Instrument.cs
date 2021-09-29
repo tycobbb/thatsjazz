@@ -8,8 +8,8 @@ public class Instrument: MonoBehaviour {
 
     // -- lifecycle --
     void Awake() {
-        if (mScale.Length != 12) {
-            Debug.LogError($"{this} did not contain 12 notes");
+        if (mScale.Length % 12 != 0) {
+            Debug.LogError($"{this} has an incomplete octave");
         }
     }
 
@@ -26,7 +26,7 @@ public class Instrument: MonoBehaviour {
 
         // grab all those clips
         for (var i = 0; i < n; i++) {
-            clips[i] = mScale[(int)chord.FindNote(i)];
+            clips[i] = mScale[chord[i].Steps];
         }
 
         return n;
