@@ -441,7 +441,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca8ed092cd6654f1c9575cc95fbe061c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mSource: {fileID: 892018669}
+  mNumSources: 4
+  mSources: []
   mInstrument: {fileID: 1405755069}
 --- !u!1 &1036952428
 GameObject:
