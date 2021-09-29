@@ -14,7 +14,21 @@ public class Instrument: MonoBehaviour {
     }
 
     // -- queries --
-    public AudioClip AnyNote() {
+    /// gets a random audio clip
+    public AudioClip AnyClip() {
         return mScale[Random.Range(0, mScale.Length)];
+    }
+
+    /// find the clips for the given chord w/ a pre-allocated array
+    public int FindClipsForChord(AudioClip[] clips, Chord chord) {
+        // get the number of notes we need or can fit
+        var n = Mathf.Min(chord.Length, clips.Length);
+
+        // grab all those clips
+        for (var i = 0; i < n; i++) {
+            clips[i] = mScale[(int)chord.FindNote(i)];
+        }
+
+        return n;
     }
 }

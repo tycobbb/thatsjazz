@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,6 +18,9 @@ public class Musicker: MonoBehaviour {
     /// the index of the next available audio source
     int mNextSource = 0;
 
+    /// pre-allocated storage for audio clips
+    AudioClip[] mClips;
+
     // -- lifecycle --
     void Awake() {
         // create any necessary audio sources
@@ -26,20 +30,53 @@ public class Musicker: MonoBehaviour {
             var source = go.AddComponent<AudioSource>();
             mSources.Add(source);
         }
+
+        // set props
+        mClips = new AudioClip[4];
     }
 
     // -- commands --
     /// play some music
     void Play() {
+        var key = new Key(Note.C);
+        var chord = key.Chord(Tone.I, Tone.III, Tone.V, Tone.VII);
+        PlayChord(chord, 0.1f);
+    }
+
+    /// play the clips in the chord. pass an interval to arpeggiate.
+    void PlayChord(Chord chord, float interval = 0.0f) {
+        StartCoroutine(PlayChordAsync(chord, interval));
+    }
+
+    /// play the clips in the chord. pass an interval to arpeggiate.
+    IEnumerator PlayChordAsync(Chord chord, float interval = 0.0f) {
+        var nClips = mInstrument.FindClipsForChord(
+            mClips,
+            chord
+        );
+
+        for (var i = 0; i < nClips; i++) {
+            PlayClip(mClips[i]);
+
+            if (interval != 0.0) {
+                yield return new WaitForSeconds(interval);
+            }
+        }
+    }
+
+    /// play a clip on the next source
+    void PlayClip(AudioClip clip) {
+        var i = mNextSource;
+
         // find the audio source
-        var source = mSources[mNextSource];
+        var source = mSources[i];
 
         // play the clip
-        source.clip = mInstrument.AnyNote();
+        source.clip = clip;
         source.Play();
 
         // advance the source
-        mNextSource += 1;
+        mNextSource = (i + 1) % mNumSources;
     }
 
     // -- events --
