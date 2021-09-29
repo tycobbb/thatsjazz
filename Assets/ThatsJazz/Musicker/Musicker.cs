@@ -36,20 +36,13 @@ public class Musicker: MonoBehaviour {
     }
 
     // -- commands --
-    /// play some music
-    void Play() {
-        var key = new Key(Note.C);
-        var chord = key.Chord(Tone.I, Quality.Min7);
-        PlayChord(chord, 0.1f);
-    }
-
     /// play the clips in the chord. pass an interval to arpeggiate.
-    void PlayChord(Chord chord, float interval = 0.0f) {
+    public void PlayChord(Chord chord, float interval = 0.0f) {
         StartCoroutine(PlayChordAsync(chord, interval));
     }
 
     /// play the clips in the chord. pass an interval to arpeggiate.
-    IEnumerator PlayChordAsync(Chord chord, float interval = 0.0f) {
+    public IEnumerator PlayChordAsync(Chord chord, float interval = 0.0f) {
         var nClips = mInstrument.FindClipsForChord(
             mClips,
             chord
@@ -77,10 +70,5 @@ public class Musicker: MonoBehaviour {
 
         // advance the source
         mNextSource = (i + 1) % mNumSources;
-    }
-
-    // -- events --
-    void OnCollisionEnter(Collision other) {
-        Play();
     }
 }
