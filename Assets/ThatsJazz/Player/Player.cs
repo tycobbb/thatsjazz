@@ -108,6 +108,7 @@ public class Player: MonoBehaviour {
     }
 
     // -- queries --
+    /// get the player's key
     public Key Key {
         get => mKey;
     }
