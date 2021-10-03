@@ -34,6 +34,9 @@ public class Player: MonoBehaviour {
     /// the player's inputs
     PlayerInput.PlayerActions mInputs;
 
+    /// the current move dir
+    Vector3 mMoveDir;
+
     /// the current squish velocity
     Vector3 mSquishVel = Vector3.zero;
 
@@ -47,12 +50,13 @@ public class Player: MonoBehaviour {
         mInputs.Enable();
     }
 
-    void FixedUpdate() {
-        // squish the player
-        Squish();
+    void Update() {
+        ReadMove();
+    }
 
-        // move the player
+    void FixedUpdate() {
         Move();
+        Squish();
     }
 
     void OnDisable() {
@@ -60,13 +64,17 @@ public class Player: MonoBehaviour {
     }
 
     // -- commands --
+    /// read move inputs
+    void ReadMove() {
+        var input = mInputs.Move.ReadValue<Vector2>();
+        mMoveDir.x = input.x;
+        mMoveDir.z = input.y;
+    }
+
     /// move the player
     void Move() {
-        var input = mInputs.Move.ReadValue<Vector2>();
-        var dir = new Vector3(input.x, 0.0f, input.y);
-
         mFoot.AddForceAtPosition(
-            dir * mMoveMag,
+            mMoveDir * mMoveMag,
             mMovePos.position,
             ForceMode.Acceleration
         );
