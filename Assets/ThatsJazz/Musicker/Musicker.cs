@@ -36,6 +36,23 @@ public class Musicker: MonoBehaviour {
     }
 
     // -- commands --
+    /// play the current tone in the line and advance it
+    public void PlayLine(Line line) {
+        PlayTone(line.Curr());
+        line.Advance();
+    }
+
+    /// play the current chord in a progression and advance it
+    public void PlayProgression(Progression prog) {
+        PlayChord(prog.Curr());
+        prog.Advance();
+    }
+
+    /// play the clip for a tone
+    public void PlayTone(Tone tone) {
+        PlayClip(mInstrument.FindClip(tone));
+    }
+
     /// play the clips in the chord. pass an interval to arpeggiate.
     public void PlayChord(Chord chord, float interval = 0.0f) {
         StartCoroutine(PlayChordAsync(chord, interval));

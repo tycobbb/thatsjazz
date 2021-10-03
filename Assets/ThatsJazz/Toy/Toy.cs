@@ -9,28 +9,28 @@ public class Toy: MonoBehaviour {
     /// the toy's current musical key
     readonly Key mKey = Key.C;
 
-    /// the toy's chord progression
-    Progression mProg;
+    /// the toy's line
+    Line mLine;
 
     // -- lifecycle --
     void Awake() {
-        mProg = new Progression(
-            mKey.Chord(Tone.II, Quality.Min7),
-            mKey.Chord(Tone.V, Quality.Dom7),
-            mKey.Chord(Tone.I, Quality.Maj7),
-            mKey.Chord(Tone.I, Quality.Maj7)
+        mLine = new Line(
+            Tone.I.Octave(),
+            Tone.V,
+            Tone.IV,
+            Tone.III,
+            Tone.I
         );
     }
 
     // -- commands --
     /// play some music
-    void PlayChord() {
-        mMusicker.PlayChord(mProg.Curr(), 0.1f);
-        mProg.Advance();
+    void Play() {
+        mMusicker.PlayLine(mLine);
     }
 
     // -- events --
     void OnCollisionEnter(Collision other) {
-        PlayChord();
+        Play();
     }
 }

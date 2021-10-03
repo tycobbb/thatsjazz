@@ -14,9 +14,9 @@ public class Instrument: MonoBehaviour {
     }
 
     // -- queries --
-    /// gets a random audio clip
-    public AudioClip AnyClip() {
-        return mScale[Random.Range(0, mScale.Length)];
+    /// find the clip for a tone
+    public AudioClip FindClip(Tone tone) {
+        return mScale[tone.Steps];
     }
 
     /// find the clips for the given chord w/ a pre-allocated array
@@ -26,7 +26,7 @@ public class Instrument: MonoBehaviour {
 
         // grab all those clips
         for (var i = 0; i < n; i++) {
-            clips[i] = mScale[chord[i].Steps];
+            clips[i] = FindClip(chord[i]);
         }
 
         return n;

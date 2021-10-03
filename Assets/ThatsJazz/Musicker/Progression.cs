@@ -1,7 +1,7 @@
 /// a chord progression
-public struct Progression {
+public sealed class Progression {
     // -- props --
-    /// the index of the curren chord
+    /// the index of the current chord
     int mCurr;
 
     /// the chords in this progression
