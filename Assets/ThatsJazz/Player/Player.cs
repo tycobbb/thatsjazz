@@ -30,26 +30,21 @@ public class Player: MonoBehaviour {
     [Tooltip("the pos where the move is applied")]
     [SerializeField] Transform mMovePos;
 
-    [Tooltip("the player's input")]
-    [SerializeField] PlayerInput mInputs;
-
-    // -- inputs --
-    /// the move input
-    InputAction mMove;
-
-    /// the squish input
-    InputAction mSquish;
-
     // -- props --
+    /// the player's inputs
+    PlayerInput.PlayerActions mInputs;
+
     /// the current squish velocity
     Vector3 mSquishVel = Vector3.zero;
 
     // -- lifecycle --
     void Awake() {
-        // find inputs
-        var ia = mInputs.actions;
-        mMove = ia.FindAction("Move");
-        mSquish = ia.FindAction("Squish");
+        // set props
+        mInputs = new PlayerInput().Player;
+    }
+
+    void OnEnable() {
+        mInputs.Enable();
     }
 
     void FixedUpdate() {
@@ -60,10 +55,14 @@ public class Player: MonoBehaviour {
         Move();
     }
 
+    void OnDisable() {
+        mInputs.Disable();
+    }
+
     // -- commands --
     /// move the player
     void Move() {
-        var input = mMove.ReadValue<Vector2>();
+        var input = mInputs.Move.ReadValue<Vector2>();
         var dir = new Vector3(input.x, 0.0f, input.y);
 
         mFoot.AddForceAtPosition(
@@ -78,7 +77,7 @@ public class Player: MonoBehaviour {
         var scale = mScaleDefault;
 
         // if squished, target that scale
-        if (mSquish.IsPressed()) {
+        if (mInputs.Squish.IsPressed()) {
             scale = mScaleSquished;
         }
 

@@ -181,6 +181,17 @@
                 },
                 {
                     "name": "",
+                    "id": "fec6bc56-f8d6-46e8-8269-656acb3d5b6e",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Squish",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "886e731e-7071-4ae4-95c0-e61739dad6fd",
                     "path": "<Touchscreen>/primaryTouch/tap",
                     "interactions": "",
@@ -208,17 +219,6 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "XR",
-                    "action": "Squish",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "fec6bc56-f8d6-46e8-8269-656acb3d5b6e",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
                     "action": "Squish",
                     "isComposite": false,
                     "isPartOfComposite": false

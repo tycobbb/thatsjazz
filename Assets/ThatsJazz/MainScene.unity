@@ -559,7 +559,6 @@ GameObject:
   - component: {fileID: 1630546505}
   - component: {fileID: 1630546506}
   - component: {fileID: 1630546508}
-  - component: {fileID: 1630546509}
   - component: {fileID: 1630546507}
   m_Layer: 0
   m_Name: Player
@@ -597,17 +596,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9cbee98a5404ec997d2a16a7b550f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mMoveMag: 10000
+  mMoveMag: 40
   mScaleDefault:
-    Val: {x: 1, y: 1, z: 1}
-    Speed: 0.1
+    Dst: {x: 1, y: 1, z: 1}
+    Time: 0.1
   mScaleSquished:
-    Val: {x: 1.2, y: 0.7, z: 1.2}
-    Speed: 0.25
+    Dst: {x: 1.2, y: 0.7, z: 1.2}
+    Time: 0.25
   mRoot: {fileID: 1630546505}
   mFoot: {fileID: 2078993084}
   mMovePos: {fileID: 1835534529}
-  mInputs: {fileID: 1630546509}
 --- !u!138 &1630546507
 FixedJoint:
   m_ObjectHideFlags: 0
@@ -639,36 +637,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1630546509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1630546504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: bc70d07c77ce64ea68e5c2888d3f8d63, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Keyboard&Mouse
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!1001 &1709664278
 PrefabInstance:
   m_ObjectHideFlags: 0
