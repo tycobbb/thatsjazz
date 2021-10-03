@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class Player: MonoBehaviour {
     // -- tuning --
@@ -20,9 +18,10 @@ public class Player: MonoBehaviour {
         time: 1.0f
     );
 
+    [Tooltip("the player's musical key")]
+    [SerializeField] Root mRoot = Root.C;
+
     // -- nodes --
-    [FormerlySerializedAs("mMesh")]
-    [FormerlySerializedAs("mRoot")]
     [Header("nodes")]
     [Tooltip("the player's model transform")]
     [SerializeField] Transform mModel;
@@ -34,8 +33,8 @@ public class Player: MonoBehaviour {
     [SerializeField] Transform mMovePos;
 
     // -- props --
-    /// the player's inputs
-    PlayerInput.PlayerActions mInputs;
+    /// the musical key
+    Key mKey;
 
     /// the current move dir
     Vector3 mMoveDir;
@@ -43,9 +42,13 @@ public class Player: MonoBehaviour {
     /// the current squish velocity
     Vector3 mSquishVel = Vector3.zero;
 
+    /// the player's inputs
+    PlayerInput.PlayerActions mInputs;
+
     // -- lifecycle --
     void Awake() {
         // set props
+        mKey = new Key(mRoot);
         mInputs = new PlayerInput().Player;
     }
 
@@ -102,5 +105,10 @@ public class Player: MonoBehaviour {
 
         // update scale
         mModel.localScale = next;
+    }
+
+    // -- queries --
+    public Key Key {
+        get => mKey;
     }
 }

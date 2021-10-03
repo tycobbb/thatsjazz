@@ -6,9 +6,6 @@ public class Toy: MonoBehaviour {
     [SerializeField] Musicker mMusicker;
 
     // -- props --
-    /// the toy's current musical key
-    readonly Key mKey = Key.C;
-
     /// the toy's line
     Line mLine;
 
@@ -25,12 +22,21 @@ public class Toy: MonoBehaviour {
 
     // -- commands --
     /// play some music
-    void Play() {
-        mMusicker.PlayLine(mLine);
+    void Play(Key? key) {
+        mMusicker.PlayLine(mLine, key);
     }
 
     // -- events --
     void OnCollisionEnter(Collision other) {
-        Play();
+        Key? key = null;
+
+        // use the player's key if we hit a player
+        var player = other.gameObject.GetComponent<Player>();
+        if (player) {
+            key = player.Key;
+        }
+
+        // play some music
+        Play(key);
     }
 }

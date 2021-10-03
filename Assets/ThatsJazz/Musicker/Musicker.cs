@@ -37,9 +37,18 @@ public class Musicker: MonoBehaviour {
 
     // -- commands --
     /// play the current tone in the line and advance it
-    public void PlayLine(Line line) {
-        PlayTone(line.Curr());
+    public void PlayLine(Line line, Key? key = null) {
+        // get the next tone
+        var tone = line.Curr();
         line.Advance();
+
+        // transpose if necessary
+        if (key != null) {
+            tone = key.Value.Transpose(tone);
+        }
+
+        // play the tone
+        PlayTone(tone);
     }
 
     /// play the current chord in a progression and advance it
