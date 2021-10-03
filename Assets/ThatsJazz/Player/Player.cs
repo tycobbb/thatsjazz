@@ -1,10 +1,22 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Player: MonoBehaviour {
+    // -- statics --
+    /// the layer for toys
+    static int sToyLayer = -1;
+
     // -- tuning --
+    [FormerlySerializedAs("mKeyRoot")]
     [Header("tuning")]
+    [Tooltip("the player's musical key")]
+    [SerializeField] Root mKeyOf = Root.C;
+
     [Tooltip("the magnitude of the move acceleration")]
     [SerializeField] float mMoveMag = 2.0f;
+
+    [Tooltip("the magnitude of the bounce force")]
+    [SerializeField] float mBounceMag = 5.0f;
 
     [Tooltip("the scale when normal. time is duration.")]
     [SerializeField] Linear<Vector3> mScaleDefault = new Linear<Vector3>(
@@ -18,13 +30,13 @@ public class Player: MonoBehaviour {
         time: 1.0f
     );
 
-    [Tooltip("the player's musical key")]
-    [SerializeField] Root mRoot = Root.C;
-
     // -- nodes --
     [Header("nodes")]
     [Tooltip("the player's model transform")]
     [SerializeField] Transform mModel;
+
+    [Tooltip("the player's head collider")]
+    [SerializeField] Collider mHead;
 
     [Tooltip("the player's foot's rigidbody")]
     [SerializeField] Rigidbody mFoot;
@@ -42,14 +54,22 @@ public class Player: MonoBehaviour {
     /// the current squish velocity
     Vector3 mSquishVel = Vector3.zero;
 
+    /// a buffer to raycast for bounce targets
+    RaycastHit[] mBounceHits = new RaycastHit[3];
+
     /// the player's inputs
     PlayerInput.PlayerActions mInputs;
 
     // -- lifecycle --
     void Awake() {
         // set props
-        mKey = new Key(mRoot);
+        mKey = new Key(mKeyOf);
         mInputs = new PlayerInput().Player;
+
+        // set statics
+        if (sToyLayer == -1) {
+            sToyLayer = LayerMask.NameToLayer("Toy");
+        }
     }
 
     void OnEnable() {
@@ -63,6 +83,7 @@ public class Player: MonoBehaviour {
     void FixedUpdate() {
         Move();
         Squish();
+        TryBounce();
     }
 
     void OnDisable() {
@@ -105,6 +126,42 @@ public class Player: MonoBehaviour {
 
         // update scale
         mModel.localScale = next;
+    }
+
+    /// bounce stuff above the player when un-squishing
+    void TryBounce() {
+        var v = mSquishVel.y;
+
+        // don't bounce unless un-squishing
+        if (v < 0.01f) {
+            return;
+        }
+
+        // using the player's rotation
+        var t = transform;
+
+        // get the cast size & dir
+        var rct = mHead.bounds;
+        var dir = t.up;
+        var ext = rct.extents;
+        ext.y = 0.1f;
+
+        // try to raycast for things above us
+        var nHits = Physics.BoxCastNonAlloc(
+            rct.center + dir * rct.size.y,
+            ext,
+            dir,
+            mBounceHits,
+            t.rotation,
+            0.0f
+        );
+
+        // bounce any hits
+        for (var i = 0; i < nHits; i++) {
+            var hit = mBounceHits[i];
+            var body = hit.rigidbody;
+            body.AddForce(mBounceMag * v * dir);
+        }
     }
 
     // -- queries --

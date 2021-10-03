@@ -1,8 +1,14 @@
 using UnityEngine;
 
 public class Toy: MonoBehaviour {
-    // -- config --
-    /// the musicker
+    // -- tuning --
+    [Header("tuning")]
+    [Tooltip("the minimum impluse (sqr mag) to play sound on contact")]
+    [SerializeField] float mMinImpluse = 2.0f;
+
+    // -- nodes --
+    [Header("nodes")]
+    [Tooltip("the music player")]
     [SerializeField] Musicker mMusicker;
 
     // -- props --
@@ -27,11 +33,16 @@ public class Toy: MonoBehaviour {
     }
 
     // -- events --
-    void OnCollisionEnter(Collision other) {
+    void OnCollisionEnter(Collision collision) {
+        // ignore really weak hits
+        if (collision.impulse.sqrMagnitude < mMinImpluse) {
+            return;
+        }
+
         Key? key = null;
 
         // use the player's key if we hit a player
-        var player = other.gameObject.GetComponent<Player>();
+        var player = collision.gameObject.GetComponent<Player>();
         if (player) {
             key = player.Key;
         }
