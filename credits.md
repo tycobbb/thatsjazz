@@ -1,1 +1,2 @@
 - octopus by poly by google [cc-by] (https://creativecommons.org/licenses/by/3.0/) via [poly pizza](https://poly.pizza/m/9-b6-yqrwEe)
+- dog by nikki morin [cc-by](https://creativecommons.org/licenses/by/3.0/) via [poly pizza](https://poly.pizza/m/eCpJzAc3-GM)

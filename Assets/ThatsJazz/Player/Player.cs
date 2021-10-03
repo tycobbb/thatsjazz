@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class Player: MonoBehaviour {
     // -- tuning --
@@ -20,9 +21,11 @@ public class Player: MonoBehaviour {
     );
 
     // -- nodes --
+    [FormerlySerializedAs("mMesh")]
+    [FormerlySerializedAs("mRoot")]
     [Header("nodes")]
-    [Tooltip("the player's root transform")]
-    [SerializeField] Transform mRoot;
+    [Tooltip("the player's model transform")]
+    [SerializeField] Transform mModel;
 
     [Tooltip("the player's foot's rigidbody")]
     [SerializeField] Rigidbody mFoot;
@@ -91,13 +94,13 @@ public class Player: MonoBehaviour {
 
         // animate towards scale
         var next = Vector3.SmoothDamp(
-            mRoot.localScale,
+            mModel.localScale,
             scale.Dst,
             ref mSquishVel,
             scale.Time
         );
 
         // update scale
-        mRoot.localScale = next;
+        mModel.localScale = next;
     }
 }
