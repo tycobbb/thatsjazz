@@ -597,7 +597,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9cbee98a5404ec997d2a16a7b550f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mMoveMag: 40
+  mMoveMag: 10000
+  mScaleDefault:
+    Val: {x: 1, y: 1, z: 1}
+    Speed: 0.1
+  mScaleSquished:
+    Val: {x: 1.2, y: 0.7, z: 1.2}
+    Speed: 0.25
+  mRoot: {fileID: 1630546505}
   mFoot: {fileID: 2078993084}
   mMovePos: {fileID: 1835534529}
   mInputs: {fileID: 1630546509}
@@ -658,7 +665,7 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}

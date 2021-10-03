@@ -11,7 +11,8 @@
                     "id": "d3c5d3a3-f012-47fd-ab78-e51e435834d2",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Squish",
@@ -19,7 +20,8 @@
                     "id": "3bd249cd-0965-47d2-a3d0-1049dc35b60e",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -206,6 +208,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "XR",
+                    "action": "Squish",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fec6bc56-f8d6-46e8-8269-656acb3d5b6e",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Squish",
                     "isComposite": false,
                     "isPartOfComposite": false
