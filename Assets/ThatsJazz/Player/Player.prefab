@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mKeyOf: 0
-  mMoveMag: 40
+  mMoveMag: 10
   mMoveBias:
     X1: -1
     X2: 1
