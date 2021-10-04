@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.InputSystem;
 
 public class Player: MonoBehaviour {
     // -- statics --
@@ -7,16 +7,19 @@ public class Player: MonoBehaviour {
     static int sToyLayer = -1;
 
     // -- tuning --
-    [FormerlySerializedAs("mKeyRoot")]
-    [Header("tuning")]
+    [Header("config")]
+    [Tooltip("the player's name")]
+    [SerializeField] Name mName = Name.W;
+
     [Tooltip("the player's musical key")]
     [SerializeField] Root mKeyOf = Root.C;
 
+    [Header("tuning")]
     [Tooltip("the magnitude of the move")]
     [SerializeField] float mMoveMag = 2.0f;
 
-    [Tooltip("the bias of the move")]
-    [SerializeField] Box2 mMoveBias = Box2.Zero;
+    [Tooltip("the bias of the preferred move")]
+    [SerializeField] float mMoveBias = 1.5f;
 
     [Tooltip("the magnitude of the bounce force")]
     [SerializeField] float mBounceMag = 5.0f;
@@ -43,6 +46,9 @@ public class Player: MonoBehaviour {
 
     [Tooltip("the music player")]
     [SerializeField] Musicker mMusic;
+
+    [Tooltip("the toy to move towards")]
+    [SerializeField] Transform mToy;
 
     // -- props --
     /// the musical key
@@ -104,29 +110,35 @@ public class Player: MonoBehaviour {
     // -- commands --
     /// read move inputs
     void ReadMove() {
+        // zero out move dir
+        mMoveDir = Vector2.zero;
+
+        // aggregate each direction
         var i = mInputs;
-        var b = mMoveBias;
+        ReadDir(i.Up, Name.W, Vector2.up);
+        ReadDir(i.Left, Name.A, Vector2.left);
+        ReadDir(i.Down, Name.S, Vector2.down);
+        ReadDir(i.Right, Name.D, Vector2.right);
+    }
 
-        // aggregate biased dir
-        var dir = Vector2.zero;
-        if (i.Up.IsPressed()) {
-            dir.y += b.Y2;
+    /// read input for a specific direction and add it
+    void ReadDir(InputAction input, Name name, Vector2 offKey) {
+        // skip if not pressed
+        if (!input.IsPressed()) {
+            return;
         }
 
-        if (i.Down.IsPressed()) {
-            dir.y += b.Y1;
+        // add the off key value if not our named key
+        if (mName != name) {
+            mMoveDir += offKey;
+            return;
         }
 
-        if (i.Left.IsPressed()) {
-            dir.x += b.X1;
-        }
+        // if our named key, move towards the toy
+        var delta = mToy.position - transform.position;
+        var track = new Vector2(delta.x, delta.z).normalized * mMoveBias;
 
-        if (i.Right.IsPressed()) {
-            dir.x += b.X2;
-        }
-
-        // and store it for movement later
-        mMoveDir = dir;
+        mMoveDir += track;
     }
 
     /// move the player
@@ -138,7 +150,7 @@ public class Player: MonoBehaviour {
 
         // apply the biased move force
         mFoot.AddForceAtPosition(
-            dir * mMoveMag,
+            dir.normalized * mMoveMag,
             mMovePos.position,
             ForceMode.Acceleration
         );
