@@ -1,7 +1,12 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
+/// a bouncing toy
 public class Toy: MonoBehaviour {
+    // -- deps --
+    /// the score module
+    Score mScore;
+
     // -- tuning --
     [FormerlySerializedAs("mMinImpluse")]
     [Header("tuning")]
@@ -19,6 +24,10 @@ public class Toy: MonoBehaviour {
 
     // -- lifecycle --
     void Awake() {
+        // set deps
+        mScore = Score.Get;
+
+        // set props
         mLine = new Line(
             Tone.I.Octave(),
             Tone.V,
@@ -31,12 +40,18 @@ public class Toy: MonoBehaviour {
     // -- commands --
     /// missed everything (hit the ground)
     void Miss() {
+        mScore.RecordMiss();
+
+        // play some music
         mMusicker.PlayRand();
         mMusicker.PlayLine(mLine);
     }
 
     /// hit a player
     void Hit(Player player) {
+        mScore.RecordHit();
+
+        // play some music
         mMusicker.PlayLine(mLine, player.Key);
     }
 
