@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -40,17 +41,8 @@ public class Musicker: MonoBehaviour {
     // -- commands --
     /// play the current tone in the line and advance it
     public void PlayLine(Line line, Key? key = null) {
-        // get the next tone
-        var tone = line.Curr();
+        PlayTone(line.Curr(), key);
         line.Advance();
-
-        // transpose if necessary
-        if (key != null) {
-            tone = key.Value.Transpose(tone);
-        }
-
-        // play the tone
-        PlayTone(tone);
     }
 
     /// play the current chord in a progression and advance it
@@ -64,7 +56,13 @@ public class Musicker: MonoBehaviour {
     }
 
     /// play the clip for a tone
-    public void PlayTone(Tone tone) {
+    public void PlayTone(Tone tone, Key? key = null) {
+        // transpose if necessary
+        if (key != null) {
+            tone = key.Value.Transpose(tone);
+        }
+
+        // play the clip
         PlayClip(mInstrument.FindClip(tone));
     }
 
@@ -102,5 +100,17 @@ public class Musicker: MonoBehaviour {
 
         // advance the source
         mNextSource = (i + 1) % mNumSources;
+    }
+
+    // -- queries --
+    /// if the musicker has any sources available
+    public bool IsAvailable() {
+        foreach (var source in mSources) {
+            if (!source.isPlaying) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

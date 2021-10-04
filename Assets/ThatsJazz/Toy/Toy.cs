@@ -8,15 +8,14 @@ public class Toy: MonoBehaviour {
     Score mScore;
 
     // -- tuning --
-    [FormerlySerializedAs("mMinImpluse")]
     [Header("tuning")]
-    [Tooltip("the minimum impluse (sqr mag) to play sound on contact")]
+    [Tooltip("the minimum impulse (sqr mag) to play sound on contact")]
     [SerializeField] float mMinImpulse = 2.0f;
 
     // -- nodes --
     [Header("nodes")]
     [Tooltip("the music player")]
-    [SerializeField] Musicker mMusicker;
+    [SerializeField] Musicker mMusic;
 
     // -- props --
     /// the toy's line
@@ -43,21 +42,27 @@ public class Toy: MonoBehaviour {
         mScore.RecordMiss();
 
         // play some music
-        mMusicker.PlayRand();
-        mMusicker.PlayLine(mLine);
+        mMusic.PlayRand();
+        mMusic.PlayLine(mLine);
     }
 
     /// hit a player
     void Hit(Player player) {
         mScore.RecordHit();
 
-        // play some music
-        mMusicker.PlayLine(mLine, player.Key);
+        // get the current note
+        var tone = mLine.Curr();
+
+        // play the next note in the line
+        mMusic.PlayLine(mLine, player.Key);
+
+        // have the player sing a fifth
+        player.Sing(tone.Add(7));
     }
 
     /// hit something else
     void Hit() {
-        mMusicker.PlayLine(mLine);
+        mMusic.PlayLine(mLine);
     }
 
     // -- events --

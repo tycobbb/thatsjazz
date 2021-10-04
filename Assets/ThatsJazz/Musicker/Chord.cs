@@ -8,7 +8,7 @@ public readonly struct Chord {
 
     // -- lifetime --
     /// create a chord from a list of tones
-    public Chord(Tone[] tones) {
+    public Chord(params Tone[] tones) {
         mTones = tones;
     }
 

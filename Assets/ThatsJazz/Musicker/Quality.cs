@@ -22,6 +22,15 @@ public struct Quality {
     }
 
     // -- factories --
+    /// a perfect fifth (w/ octave)
+    public static Quality P5 {
+        get => new Quality(
+            Tone.I,
+            Tone.V,
+            Tone.I.Octave()
+        );
+    }
+
     /// a major 7th chord quality
     public static Quality Maj7 {
         get => new Quality(

@@ -41,6 +41,9 @@ public class Player: MonoBehaviour {
     [Tooltip("the pos where the move is applied")]
     [SerializeField] Transform mMovePos;
 
+    [Tooltip("the music player")]
+    [SerializeField] Musicker mMusic;
+
     // -- props --
     /// the musical key
     Key mKey;
@@ -51,6 +54,9 @@ public class Player: MonoBehaviour {
     /// the current squish velocity
     Vector3 mSquishVel = Vector3.zero;
 
+    /// the player's chord when bouncing
+    Progression mProg;
+
     /// a buffer to raycast for bounce targets
     RaycastHit[] mBounceHits = new RaycastHit[3];
 
@@ -60,8 +66,16 @@ public class Player: MonoBehaviour {
     // -- lifecycle --
     void Awake() {
         // set props
-        mKey = new Key(mKeyOf);
         mInputs = new PlayerInput().Player;
+
+        // set music props
+        mKey = new Key(mKeyOf);
+        mProg = new Progression(
+            mKey.Chord(Tone.II, Quality.Min7),
+            mKey.Chord(Tone.V, Quality.Dom7),
+            mKey.Chord(Tone.I, Quality.Maj7),
+            mKey.Chord(Tone.I, Quality.Maj7)
+        );
 
         // set statics
         if (sToyLayer == -1) {
@@ -182,9 +196,28 @@ public class Player: MonoBehaviour {
         // bounce any hits
         for (var i = 0; i < nHits; i++) {
             var hit = mBounceHits[i];
-            var body = hit.rigidbody;
-            body.AddForce(mBounceMag * v * dir);
+            hit.rigidbody.AddForce(mBounceMag * v * dir);
         }
+
+        if (nHits != 0 && mMusic.IsAvailable()) {
+            mMusic.PlayProgression(mProg);
+        }
+    }
+
+    // -- c/music
+    /// sings a tone in the player's key, or sometimes other notes that will
+    /// sound nice in the key.
+    public void Sing(Tone tone) {
+        var sampled = Random.Range(0, 10) switch {
+            0 => Tone.I,
+            1 => Tone.III,
+            2 => Tone.V,
+            3 => Tone.VII,
+            4 => Tone.I.Octave(),
+            _ => tone,
+        };
+
+        mMusic.PlayTone(sampled, mKey);
     }
 
     // -- queries --

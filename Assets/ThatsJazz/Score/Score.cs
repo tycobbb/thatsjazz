@@ -23,8 +23,7 @@ public class Score: MonoBehaviour {
     // -- lifecycle --
     void Awake() {
         #if !UNITY_EDITOR && UNITY_WEBGL
-        // mLabel.fontSize *= 2.5f;
-        // mLabel.rectTransform.anchoredPosition *= 2.5f;
+        mLabel.fontSize *= 2.5f;
         #endif
     }
 

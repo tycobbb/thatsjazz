@@ -15,6 +15,11 @@ public sealed class Line {
     }
 
     // -- commands --
+    /// reset the line
+    public void Reset() {
+        mCurr = 0;
+    }
+
     /// move to the next tone
     public void Advance() {
         var next = mCurr + 1;

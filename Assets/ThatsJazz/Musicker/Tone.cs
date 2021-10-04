@@ -12,8 +12,13 @@ public readonly struct Tone {
 
     // -- operators --
     /// makes the tone n steps sharper
-    public Tone Sharp(int nSteps = 1) {
+    public Tone Add(int nSteps = 1) {
         return new Tone(mSteps + nSteps);
+    }
+
+    /// alias for Add
+    public Tone Sharp(int nSteps = 1) {
+        return Add(nSteps);
     }
 
     /// makes the tone n steps flatter
