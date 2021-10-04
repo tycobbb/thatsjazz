@@ -18,4 +18,10 @@ public struct Linear<T> {
         Dst = dst;
         Time = time;
     }
+
+    // -- factories --
+    /// creates a "zero" value
+    public static Linear<T> Zero {
+        get => new Linear<T>(default, 0.0f);
+    }
 }

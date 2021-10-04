@@ -80,6 +80,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mKeyOf: 0
   mMoveMag: 40
+  mMoveBias:
+    X1: -1
+    X2: 1
+    Y1: -1
+    Y2: 1
   mBounceMag: 25
   mScaleDefault:
     Dst: {x: 1, y: 1, z: 1}
