@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class Player: MonoBehaviour {
     // -- statics --
@@ -18,8 +19,8 @@ public class Player: MonoBehaviour {
     [Tooltip("the magnitude of the move")]
     [SerializeField] float mMoveMag = 2.0f;
 
-    [Tooltip("the bias of the preferred move")]
-    [SerializeField] float mMoveBias = 1.5f;
+    [Tooltip("the bias of an off key move")]
+    [SerializeField] float mMoveOffKey = 0.3f;
 
     [Tooltip("the magnitude of the bounce force")]
     [SerializeField] float mBounceMag = 5.0f;
@@ -122,23 +123,22 @@ public class Player: MonoBehaviour {
     }
 
     /// read input for a specific direction and add it
-    void ReadDir(InputAction input, Name name, Vector2 offKey) {
+    void ReadDir(InputAction input, Name onKeyName, Vector2 offKeyDir) {
         // skip if not pressed
         if (!input.IsPressed()) {
             return;
         }
 
-        // add the off key value if not our named key
-        if (mName != name) {
-            mMoveDir += offKey;
+        // if off key, add the off key dir
+        if (mName != onKeyName) {
+            mMoveDir += offKeyDir * mMoveOffKey;
             return;
         }
 
-        // if our named key, move towards the toy
+        // otherwise on key, so move towards the toy
         var delta = mToy.position - transform.position;
-        var track = new Vector2(delta.x, delta.z).normalized * mMoveBias;
-
-        mMoveDir += track;
+        var track = new Vector2(delta.x, delta.z);
+        mMoveDir += track.normalized;
     }
 
     /// move the player
@@ -150,7 +150,7 @@ public class Player: MonoBehaviour {
 
         // apply the biased move force
         mFoot.AddForceAtPosition(
-            dir.normalized * mMoveMag,
+            dir * mMoveMag,
             mMovePos.position,
             ForceMode.Acceleration
         );
