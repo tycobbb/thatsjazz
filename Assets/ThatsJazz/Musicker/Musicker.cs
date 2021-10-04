@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 /// a thing that plays music
 public class Musicker: MonoBehaviour {
@@ -55,6 +57,10 @@ public class Musicker: MonoBehaviour {
     public void PlayProgression(Progression prog) {
         PlayChord(prog.Curr());
         prog.Advance();
+    }
+
+    public void PlayRand() {
+        PlayClip(mInstrument.RandClip());
     }
 
     /// play the clip for a tone

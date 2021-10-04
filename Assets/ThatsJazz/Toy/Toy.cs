@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Toy: MonoBehaviour {
     // -- tuning --
+    [FormerlySerializedAs("mMinImpluse")]
     [Header("tuning")]
     [Tooltip("the minimum impluse (sqr mag) to play sound on contact")]
-    [SerializeField] float mMinImpluse = 2.0f;
+    [SerializeField] float mMinImpulse = 2.0f;
 
     // -- nodes --
     [Header("nodes")]
@@ -27,27 +29,41 @@ public class Toy: MonoBehaviour {
     }
 
     // -- commands --
-    /// play some music
-    void Play(Key? key) {
-        mMusicker.PlayLine(mLine, key);
+    /// missed everything (hit the ground)
+    void Miss() {
+        mMusicker.PlayRand();
+        mMusicker.PlayLine(mLine);
+    }
+
+    /// hit a player
+    void Hit(Player player) {
+        mMusicker.PlayLine(mLine, player.Key);
+    }
+
+    /// hit something else
+    void Hit() {
+        mMusicker.PlayLine(mLine);
     }
 
     // -- events --
     void OnCollisionEnter(Collision collision) {
         // ignore really weak hits
-        if (collision.impulse.sqrMagnitude < mMinImpluse) {
+        if (collision.impulse.sqrMagnitude < mMinImpulse) {
             return;
         }
 
-        Key? key = null;
-
-        // use the player's key if we hit a player
-        var player = collision.gameObject.GetComponent<Player>();
-        if (player) {
-            key = player.Key;
+        // a miss if we hit the ground
+        if (collision.gameObject.CompareTag("Ground")) {
+            Miss();
+            return;
         }
 
-        // play some music
-        Play(key);
+        // otherwise, see if we hit something significant, like a player
+        var player = collision.gameObject.GetComponent<Player>();
+        if (player) {
+            Hit(player);
+        } else {
+            Hit();
+        }
     }
 }

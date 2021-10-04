@@ -14,9 +14,14 @@ public class Instrument: MonoBehaviour {
     }
 
     // -- queries --
+    /// find a random audio clip
+    public AudioClip RandClip() {
+        return mScale[Random.Range(0, Length)];
+    }
+
     /// find the clip for a tone
     public AudioClip FindClip(Tone tone) {
-        return mScale[tone.Steps];
+        return mScale[tone.Steps % Length];
     }
 
     /// find the clips for the given chord w/ a pre-allocated array
@@ -30,5 +35,10 @@ public class Instrument: MonoBehaviour {
         }
 
         return n;
+    }
+
+    /// the length of the scale
+    int Length {
+        get => mScale.Length;
     }
 }
